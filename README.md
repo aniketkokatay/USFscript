@@ -1,4 +1,5 @@
 # USFScript & MathOS Specification  An implementation of a pure mathematical execution model that translates traditional control flow, conditionals, and state transitions into closed-form algebraic equations using the **Universal Step Function (USF)**.  
+## 🌐 Site Link : [USFscript](https://aniketkokatay.github.io/USFscript/)
 ## 📄 Primary Research Paper  - **Title:** An Elementary Universal Step Function for Translating Programming Constructs into Pure Mathematics 
 - **Zenodo DOI/Record:** [10.5281/zenodo.23131071](https://zenodo.org/records/23131071)
 - **Author:** Aniket Mandar Kokatay - **ORCID:** [0009-0001-1428-6447](https://orcid.org/0009-0001-1428-6447)
