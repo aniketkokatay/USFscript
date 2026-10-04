@@ -1,0 +1,373 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>USFScript & MathOS Specification</title>
+  
+  <!-- MathJax Configuration for Inline $...$ and Display $$...$$ -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <style>
+    /* Academicpages / Minimal Mistakes Theme Palette */
+    :root {
+      --bg: #ffffff;
+      --text: #222222;
+      --text-muted: #555555;
+      --border: #e2e2e2;
+      --link: #0056b3;
+      --code-bg: #f8f9fa;
+      --header-bg: #22252a;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: var(--text);
+      background-color: var(--bg);
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+    }
+
+    header.site-header {
+      background: var(--header-bg);
+      color: #fff;
+      padding: 0.75rem 0;
+    }
+
+    .header-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .site-title {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    nav.site-nav a {
+      color: #ccc;
+      text-decoration: none;
+      margin-left: 1.25rem;
+      font-size: 0.9rem;
+    }
+
+    nav.site-nav a:hover { color: #fff; }
+
+    .page-wrapper {
+      max-width: 1100px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 2.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .page-wrapper { grid-template-columns: 1fr; }
+    }
+
+    /* Sidebar Column */
+    .sidebar {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .author-card {
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1.5rem;
+    }
+
+    .author-name {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text);
+      margin: 0 0 0.25rem 0;
+    }
+
+    .author-bio {
+      margin: 0 0 1rem 0;
+      font-style: italic;
+    }
+
+    .sidebar-links ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .sidebar-links li { margin-bottom: 0.5rem; }
+
+    .sidebar-links a {
+      color: var(--link);
+      text-decoration: none;
+    }
+
+    .sidebar-links a:hover { text-decoration: underline; }
+
+    /* Main Content Column */
+    main.content h1 {
+      font-size: 2rem;
+      margin-top: 0;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.5rem;
+    }
+
+    main.content h2 {
+      font-size: 1.35rem;
+      margin-top: 2rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.3rem;
+    }
+
+    main.content h3 {
+      font-size: 1.1rem;
+      margin-top: 1.5rem;
+    }
+
+    .paper-box {
+      background: var(--code-bg);
+      border-left: 4px solid var(--link);
+      padding: 1rem 1.25rem;
+      margin: 1.5rem 0;
+      font-size: 0.95rem;
+    }
+
+    .paper-title {
+      font-weight: 700;
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+
+    .math-block {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 1rem;
+      overflow-x: auto;
+      margin: 1rem 0;
+    }
+
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 1rem;
+      overflow-x: auto;
+      font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 0.85rem;
+    }
+
+    code {
+      font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 0.88em;
+      background: var(--code-bg);
+      padding: 0.1rem 0.3rem;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+    }
+
+    pre code {
+      border: none;
+      padding: 0;
+    }
+
+    .desmos-frame {
+      width: 100%;
+      height: 450px;
+      border: 1px solid var(--border);
+      margin-top: 1rem;
+    }
+
+    footer.site-footer {
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 4rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="site-title" href="#">USFScript / MathOS Specification</a>
+      <nav class="site-nav">
+        <a href="#paper">Paper</a>
+        <a href="#spec">Formulas</a>
+        <a href="#code">Implementation</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#demo">Live Engine</a>
+        <a href="#books">Books</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="page-wrapper">
+    
+    <!-- Sidebar / Profile -->
+    <aside class="sidebar">
+      <div class="author-card">
+        <h3 class="author-name">Aniket Kokatay</h3>
+        <p class="author-bio">Researcher & Author in Pure Mathematical Systems and Execution Models.</p>
+      </div>
+
+      <div class="sidebar-links">
+        <strong style="display:block; margin-bottom: 0.5rem; color: var(--text);">Primary Links</strong>
+        <ul>
+          <li><a href="https://zenodo.org/records/23131071" target="_blank">Zenodo Deposit (23131071)</a></li>
+          <li><a href="https://orcid.org/0009-0001-1428-6447" target="_blank">ORCID Profile</a></li>
+          <li><a href="#books">Published Books</a></li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="content">
+      
+      <h1>USFScript Language & MathOS</h1>
+      
+      <p>USFScript is a pure mathematical execution model designed to translate classical control flow constructs—conditionals, comparisons, loops, and state changes—into closed-form mathematical equations. Powered by the Universal Step Function (USF), USFScript eliminates programmatic branching in favor of continuous-to-discrete state transformations.</p>
+
+      <!-- Paper Citation Callout -->
+      <section id="paper" class="paper-box">
+        <span class="paper-title">Primary Reference Paper</span>
+        <em>An Elementary Universal Step Function for Translating Programming Constructs into Pure Mathematics</em> (2026).
+        <br>
+        Published on Zenodo: <a href="https://zenodo.org/records/23131071" target="_blank">zenodo.org/records/23131071</a>
+      </section>
+
+      <!-- Mathematical Foundation -->
+      <section id="spec">
+        <h2>1. Mathematical Formulation</h2>
+        <p>The core building block of USFScript is the 5-parameter Universal Step Function $o(x,y,z,p,q)$, constructed from elementary floor, ceiling, and absolute value operations:</p>
+
+        <div class="math-block">
+          $$o(x,y,z,p,q) = \left\lceil \frac{|g_x|}{|g_x| + 1} \right\rceil \cdot g_y$$
+          <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:0;">where $k_x = \lfloor x - z \rfloor$, $k_y = \lceil |y + q| \rceil$, $g_x = |k_x + 1| + k_x + 1 + p$, and $g_y = \left\lceil \frac{|k_y|}{|k_y| + 1} \right\rceil$.</p>
+        </div>
+
+        <p>Using $o(x,y,z,p,q)$, relational predicates and Boolean logic are derived deterministically without meta-notation:</p>
+
+        <ul>
+          <li><strong>Non-Strict Inequality ($x \ge y$):</strong> $g_1(x,y) = o(x, 1, y, 0, 0)$</li>
+          <li><strong>Logical Equality ($x = y$):</strong> $e_f(x,y) = g_1(x,y) \cdot g_1(y,x)$</li>
+          <li><strong>Primality Test Indicator ($p(j)$):</strong> For $k = \frac{(j-1)! + 1}{j}$,
+            $$p(j) = o\left(\lfloor k \rfloor, 1, k, 0, 0\right) \cdot o\left(k, 1, \lfloor k \rfloor, 0, 0\right)$$
+          </li>
+        </ul>
+      </section>
+
+      <!-- Code Section -->
+      <section id="code">
+        <h2>2. USFScript Python Implementation</h2>
+        <p>Below is the Python evaluation engine demonstrating USF primitive evaluation and the algebraic computation of the $N^{\text{th}}$ Prime without programmatic conditional branching (<code>if/else</code> statements).</p>
+
+<pre><code>import math
+
+def usf(x, y, z, p=0, q=0):
+    """5-Parameter Universal Step Function Primitive."""
+    kx = math.floor(x - z)
+    ky = math.ceil(abs(y + q))
+    gx = abs(kx + 1) + kx + 1 + p
+    gy = math.ceil(abs(ky) / (abs(ky) + 1))
+    return math.ceil(abs(gx) / (abs(gx) + 1)) * gy
+
+def gte(x, y):
+    """x >= y evaluated strictly via USF."""
+    return usf(x, 1, y, 0, 0)
+
+def equals(x, y):
+    """Equality indicator e_f(x,y) evaluated strictly via USF."""
+    return gte(x, y) * gte(y, x)
+
+def is_prime(n):
+    """Primality indicator evaluated algebraically."""
+    divisor_count = sum(equals(n % d, 0) for d in range(1, n + 1))
+    return equals(divisor_count, 2)
+
+def nth_prime(n):
+    """Calculates the N-th prime number via algebraic summation bounds."""
+    limit = 2 if n == 1 else int(n * (math.log(n) + math.log(math.log(n)))) + 10
+    result = 0
+    for i in range(2, limit):
+        primes_so_far = sum(is_prime(k) for k in range(2, i + 1))
+        result += i * equals(primes_so_far, n) * is_prime(i)
+    return result
+
+# Verification
+print("12th Prime Number:", nth_prime(12)) # Evaluates directly to 37
+</code></pre>
+      </section>
+
+      <!-- MathOS Architecture -->
+      <section id="architecture">
+        <h2>3. MathOS Screen & State Architecture</h2>
+        <p>In MathOS, application state transitions are handled by binding each UI frame to an algebraic multiplier in USFScript that evaluates to $1$ when active and $0$ when inactive.</p>
+
+        <ul>
+          <li><strong>Screen 1 (Home Screen):</strong> Controls active workspace navigation registers.</li>
+          <li><strong>Screen 2 (Pattern Analysis):</strong> Real-time numerical evaluator housing $N^{\text{th}}$ term engines for Prime, Fibonacci, Palindrome, and Armstrong sequences.</li>
+          <li><strong>Screen 3 (Games Hub):</strong> Interactive switch register routing input events to mini-game states.</li>
+          <li><strong>Screen 4 (Rock Paper Scissors):</strong> Algorithmic opponent engine evaluating move history frequency via algebraic counters.</li>
+          <li><strong>Screen 5 (Guess the Number):</strong> Range-bound feedback engine rendering comparative vector indicators ($\uparrow, \downarrow$) based on parity state.</li>
+        </ul>
+      </section>
+
+      <!-- Live Engine -->
+      <section id="demo">
+        <h2>4. MathOS Engine Demo</h2>
+        <p>Watch the complete MathOS application environment running live via pure mathematical equations:</p>
+        
+        <video controls width="100%" style="border: 1px solid var(--border); background: #000;">
+          <source src="mathos-demo.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </section>
+      <!-- Publications -->
+      <section id="books">
+        <h2>Official Books</h2>
+        <p>Detailed derivations, formal proofs, and extended system specifications are published in the following volumes:</p>
+
+        <ul>
+          <li>
+            <strong>The Power of Pure Mathematics: My Exploration of Equations and Identities</strong>
+            <br>
+            <span style="font-size:0.9rem; color:var(--text-muted);">An in-depth exploration into foundational identities, sequence generation templates, and step function formulations.</span>
+          </li>
+          <li style="margin-top: 1rem;">
+            <strong>Programming in Pure Mathematics: Exploring the Limitless Potential of the PSF</strong>
+            <br>
+            <span style="font-size:0.9rem; color:var(--text-muted);">Complete systems manual for building zero-branching state machines, algorithms, and operating system logic.</span>
+          </li>
+        </ul>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>&copy; 2026 Aniket Kokatay. Page hosted on GitHub Pages.</p>
+  </footer>
+
+</body>
+</html>
